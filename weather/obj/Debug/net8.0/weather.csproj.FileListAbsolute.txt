@@ -1,0 +1,14 @@
+C:\Users\fawad\OneDrive\Documents\VS code\weather\bin\Debug\net8.0\weather.exe
+C:\Users\fawad\OneDrive\Documents\VS code\weather\bin\Debug\net8.0\weather.deps.json
+C:\Users\fawad\OneDrive\Documents\VS code\weather\bin\Debug\net8.0\weather.runtimeconfig.json
+C:\Users\fawad\OneDrive\Documents\VS code\weather\bin\Debug\net8.0\weather.dll
+C:\Users\fawad\OneDrive\Documents\VS code\weather\bin\Debug\net8.0\weather.pdb
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.AssemblyInfoInputs.cache
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.AssemblyInfo.cs
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.csproj.CoreCompileInputs.cache
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.dll
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\refint\weather.dll
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.pdb
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\weather.genruntimeconfig.cache
+C:\Users\fawad\OneDrive\Documents\VS code\weather\obj\Debug\net8.0\ref\weather.dll
