@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Report</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            background: #000; /* Fallback background */
+        }
+    
+        .weather-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+        }
+    
+        /* Clear Sky Animation */
+        body.clear {
+            background: linear-gradient(to top, #87ceeb, #add8e6);
+            overflow: hidden;
+        }
+    
+        body.clear::after {
+            content: "";
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #ffdd70 60%, transparent 60%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+    
+        body.clear::before {
+            content: "";
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: conic-gradient(from 0deg, rgba(255, 221, 112, 0.5) 25%, transparent 25% 50%, rgba(255, 221, 112, 0.5) 50% 75%, transparent 75%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: sun-pulse 2s infinite;
+        }
+    
+        @keyframes sun-pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+    
+        /* Rain Animation */
+        body.rain {
+            background: linear-gradient(to bottom, #4a90e2, #2b3d5b);
+            position: relative;
+        }
+    
+        body.rain::before {
+            content: "";
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            width: 200px;
+            height: 100px;
+            background: #d1d8e0;
+            border-radius: 50px;
+            transform: translateX(-50%);
+            box-shadow: 50px 30px 0 #d1d8e0, -50px 30px 0 #d1d8e0;
+            z-index: 2;
+        }
+    
+        body.rain::after {
+            content: "";
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: transparent;
+            box-shadow: 
+                -10px 0 0 0 #ffffff,
+                0 10px 0 0 #ffffff,
+                10px 20px 0 0 #ffffff;
+            animation: rain-diagonal 0.8s infinite ease-in-out;
+            z-index: 1;
+        }
+    
+        @keyframes rain-diagonal {
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, 100vh);
+                opacity: 0;
+            }
+        }
+    
+        /* Snow Animation */
+        body.snow {
+            background: #d3d3d3;
+            position: relative;
+        }
+    
+        body.snow::after {
+            content: "";
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/b/b7/Font_Awesome_5_regular_snowflake.svg') no-repeat center center / contain;
+            transform: translate(-50%, -50%);
+            animation: snow-spin 4s linear infinite;
+        }
+    
+        @keyframes snow-spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container" id="weather-container">
+        <div class="weather-header">🌦️ Today's Weather Report 🌦️</div>
+        <div class="weather-item" id="temperature">🌡️ Temperature: </div>
+        <div class="weather-item" id="condition">☁️ Condition: </div>
+        <div class="weather-item" id="cloudiness">🌫️ Cloudiness: </div>
+        <div class="warning" id="warning"></div>
+    </div>
+    <script>
+        class Weather {
+            constructor() {
+                this.temperature = 0;
+                this.condition = '';
+                this.cloudiness = 0;
+            }
+        }
+
+        function getValidCondition(temperature, randomValue) {
+            const conditions = ["Clear", "Rain", "Snow"];
+            let condition;
+            do {
+                condition = conditions[Math.floor(randomValue() * conditions.length)];
+            } while (
+                (condition === "Snow" && temperature > 0) || // Snow only if temp <= 0
+                (condition === "Rain" && temperature < 0)    // Rain only if temp >= 0
+            );
+            return condition;
+        }
+
+        function getValidCloudiness(condition, randomValue) {
+            let cloudiness;
+            if (condition === "Clear") {
+                cloudiness = Math.floor(randomValue() * 2) * 10; // Generates either 0 or 10
+            } else if (condition === "Rain" || condition === "Snow") {
+                cloudiness = (Math.floor(randomValue() * 7) + 4) * 10; // Generates 40, 50, ..., 100
+            } else {
+                cloudiness = Math.floor(randomValue() * 11) * 10; // Generates 0, 10, 20, ..., 100
+            }
+            return cloudiness;
+        }
+
+        function generateWeather() {
+            const random = () => Math.random();
+            const todayWeather = new Weather();
+            todayWeather.temperature = Math.floor(random() * 51) - 10; // Temperature between -10°C and 40°C
+            todayWeather.condition = getValidCondition(todayWeather.temperature, random);
+            todayWeather.cloudiness = getValidCloudiness(todayWeather.condition, random);
+
+            let warningMessage = '';
+            if (todayWeather.condition === "Snow" && todayWeather.temperature < -10) {
+                warningMessage = "⚠️ Warning: It's extremely cold and snowy. Do not go outside! ⚠️";
+            }
+
+            updateWeatherReport(
+                todayWeather.temperature,
+                todayWeather.condition,
+                todayWeather.cloudiness,
+                warningMessage
+            );
+        }
+
+        function updateWeatherReport(temperature, condition, cloudiness, warningMessage) {
+    document.getElementById("temperature").innerText = `🌡️ Temperature: ${temperature}°C`;
+    document.getElementById("condition").innerText = `☁️ Condition: ${condition}`;
+    document.getElementById("cloudiness").innerText = `🌫️ Cloudiness: ${cloudiness}%`;
+    document.getElementById("warning").innerText = warningMessage || '';
+
+    // Add animation class to body based on condition
+    document.body.classList.remove("clear", "rain", "snow"); // Remove previous animations
+    if (condition === "Clear") {
+        document.body.classList.add("clear");
+    } else if (condition === "Rain") {
+        document.body.classList.add("rain");
+    } else if (condition === "Snow") {
+        document.body.classList.add("snow");
+    }
+}
+
+        // Update weather every 1 second
+        setInterval(generateWeather, 1000);
+
+        // Initial display
+        generateWeather();
+    </script>
+</body>
+</html>
